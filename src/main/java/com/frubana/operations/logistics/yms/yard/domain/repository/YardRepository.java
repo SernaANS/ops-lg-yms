@@ -56,7 +56,6 @@ public class YardRepository {
                     nextAssignation);
             createdYard.AssignWarehouse(warehouse);
             return createdYard ;
-
         }
     }
 
@@ -74,7 +73,17 @@ public class YardRepository {
     private int getNextAssignationNumber(String color, String warehouse){
         //TODO: return the next number to be assigned for this match of color
         // be carefully for the deleted index.
-        return 1;
+
+        String sql_query = "Select count(*) from YARD " +
+        "where id= :id and warehouse=:warehouse";
+
+        try (Handle handler = dbi.open();
+                Query query_string = handler.createQuery(sql_query)) {
+                
+
+                return 1;
+        }
+        
     }
 
 
