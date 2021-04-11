@@ -251,18 +251,17 @@ public class YardController {
      * }
      * </code>
      */
+    /*
     @PostMapping(
             value = "/free/",
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Object> liberar(
-            @PathVariable(value = "warehouse") String warehouse,
             @RequestBody final Yard yard) {
         //Logging the given info
 
         HashMap<String, Object> params = new HashMap<>();
         params.put("yard", yard);
-        params.put("warehouse", warehouse);
         logFormatter.logInfo(logger, "registerYard",
                 "Received request", params);
         if (yard == null) {
@@ -271,11 +270,12 @@ public class YardController {
                             "The Yard cannot be null"));
         }
         return status(HttpStatus.CREATED).body(
-                yardService.registerYard(yard,warehouse)
+                //yardService.registerYard(yard)
         );
 
 
     }
+    */
 
      
 }

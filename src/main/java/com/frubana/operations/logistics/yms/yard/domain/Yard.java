@@ -94,6 +94,15 @@ public class Yard {
         return this.color;
     }
 
+
+    /***
+     * get the assignationNumber of the yard.
+     * @return the assignationNumber in hex format.
+     */
+    public int getAssignationNumber() {
+        return this.assignationNumber;
+    }
+
     /**
      * retrieve the warehouse
      * @return {@link String} the warehouse
