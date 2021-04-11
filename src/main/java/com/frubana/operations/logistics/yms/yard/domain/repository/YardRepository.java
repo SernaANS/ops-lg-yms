@@ -114,8 +114,7 @@ public class YardRepository {
 					return assignationNumber;
 				}
 			}
-            assignationNumber++;
-            return assignationNumber;
+            return assignationNumber+1;
         }
         
     }
