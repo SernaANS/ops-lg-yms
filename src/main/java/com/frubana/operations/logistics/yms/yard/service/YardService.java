@@ -76,6 +76,18 @@ public class YardService implements HealthCheck {
        return this.repository.register(yard,warehouse);
     }
 
+     /**
+     * will look for Yard matching the warehouse and the assignationNumber
+     * @param warehouse
+     * @param assignationNumber
+     */
+    @Transactional
+    @Retry(name = SERVICE_NAME)
+    @CircuitBreaker(name = SERVICE_NAME)
+    public Yard getByWarehouseAndAssignationNumber(String warehouse , int assignationNumber) {
+       return this.repository.getByWarehouseAndAssignationNumber(warehouse, assignationNumber);
+    }
+
     /**
      * get a list of yards by warehouse
      * @param warehouse the warehouse that contains the yards
