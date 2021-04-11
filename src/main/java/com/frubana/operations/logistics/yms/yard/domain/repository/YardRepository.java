@@ -61,10 +61,9 @@ public class YardRepository {
     }
     
     /**
-     * register a yard for a specific warehouses.
-     * @param yard the yard to be register.
-     * @param warehouse the warehouse to be registered.
-     * @return the {@link Yard}  registered.
+     * uodate a yard for a specific warehouses and assignationNumber.
+     * @param yard the yard to be uodate.
+     * @return the {@link Yard}  uodate.
      */
     public Yard modificar(Yard yard){
         String sql_query="Update yard set color=:color"+
