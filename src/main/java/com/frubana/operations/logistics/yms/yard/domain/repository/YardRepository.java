@@ -59,6 +59,29 @@ public class YardRepository {
             return createdYard ;
         }
     }
+    
+    /**
+     * uodate a yard for a specific warehouses and assignationNumber.
+     * @param yard the yard to be uodate.
+     * @return the {@link Yard}  uodate.
+     */
+    public Yard modificar(Yard yard){
+        String sql_query="Update yard set color=:color"+
+                " WHERE warehouse=:warehouse and assignation_number=:assignationNumber";
+        try(Handle handler=dbi.open();
+            Update query_string = handler.createUpdate(sql_query)){
+            query_string
+                    .bind("color",yard.getColor())
+                    .bind("warehouse",yard.getWarehouse())
+                    .bind("assignationNumber",yard.getAssignationNumber());
+            int yard_id=query_string
+                    .executeAndReturnGeneratedKeys("id")
+                    .mapTo(int.class).first();
+            yard.setId(yard_id);
+            handler.close();
+            return yard;
+        }
+    }
 
     /**
      * Obtiene el siguiente numero de la assignacion ejemplo
@@ -153,6 +176,21 @@ public class YardRepository {
         }
     }
 
+    public Yard getByWarehouseAndAssignationNumber(String warehouse, int assignationNumber) {
+        String sql_query = "Select id,color,warehouse,assignation_number "+
+                "from YARD " +
+                "where warehouse=:warehouse and assignation_number=:assignationNumber order by assignation_number";
+        try (Handle handler = dbi.open();
+             Query query_string = handler.createQuery(sql_query)) {
+            query_string
+                    .bind("warehouse", warehouse)
+                    .bind("assignationNumber", assignationNumber);
+            Yard yard = query_string.mapTo(Yard.class).first();
+            handler.close();
+            return yard;
+        }
+    }
+
     public List<Yard> getAll() {
         String sql_query = "Select id,color,warehouse,assignation_number "+
                 "from YARD ";
@@ -163,7 +201,6 @@ public class YardRepository {
             return yards;
         }
     }
-
 
     /** Mapper of the {@link Yard} for the JDBI implementation.
      */

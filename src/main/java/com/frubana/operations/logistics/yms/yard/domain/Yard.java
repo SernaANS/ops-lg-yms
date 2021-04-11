@@ -85,6 +85,21 @@ public class Yard {
     public Yard() {
     }
 
+    /*
+     * get the id of the yard.
+     * @return the id in hex format.
+     */
+    public int getId() {
+        return this.id;
+    }
+
+    /*
+     * set the id of the yard.
+     * @return the id in hex format.
+     */
+    public void setId(int id) {
+        this.id=id;
+    }
 
     /***
      * get the color of the yard.
@@ -92,6 +107,15 @@ public class Yard {
      */
     public String getColor() {
         return this.color;
+    }
+
+
+    /***
+     * get the assignationNumber of the yard.
+     * @return the assignationNumber in hex format.
+     */
+    public int getAssignationNumber() {
+        return this.assignationNumber;
     }
 
     /**
