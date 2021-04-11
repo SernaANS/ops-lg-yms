@@ -85,6 +85,21 @@ public class Yard {
     public Yard() {
     }
 
+    /*
+     * get the id of the yard.
+     * @return the id in hex format.
+     */
+    public int getId() {
+        return this.id;
+    }
+
+    /*
+     * set the id of the yard.
+     * @return the id in hex format.
+     */
+    public void setId(int id) {
+        this.id=id;
+    }
 
     /***
      * get the color of the yard.
