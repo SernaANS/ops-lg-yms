@@ -41,13 +41,14 @@ public class YardRepository {
     public Yard register(Yard yard, String warehouse){
         int nextAssignation = this.getNextAssignationNumber(yard.getColor(),
                 warehouse);
-        String sql_query="Insert into yard (color, warehouse)"+
-                " values(:color, :warehouse)";
+        String sql_query="Insert into yard (color, warehouse, assignation_number)"+
+                " values(:color, :warehouse, :nextAssignation)";
         try(Handle handler=dbi.open();
             Update query_string = handler.createUpdate(sql_query)){
             query_string
                     .bind("color",yard.getColor())
-                    .bind("warehouse",warehouse);
+                    .bind("warehouse",warehouse)
+                    .bind("nextAssignation", nextAssignation);
             int yard_id=query_string
                     .executeAndReturnGeneratedKeys("id")
                     .mapTo(int.class).first();
@@ -56,16 +57,15 @@ public class YardRepository {
                     nextAssignation);
             createdYard.AssignWarehouse(warehouse);
             return createdYard ;
-
         }
     }
 
     /**
      * Obtiene el siguiente numero de la assignacion ejemplo
-     * si para el muelle #ff0000 de la bodega ALQ existen el 1,2,3,4,5 en base de datos
+     * si para el muelle #ff0000 rojo de la bodega ALQ existen el 1,2,3,4,5 en base de datos
      * debe retornar el 6.
      * OJO:
-     * si para el muelle #0000ff de la bodega ARM existen el 1,3,4,5 en base de datos
+     * si para el muelle #0000ff azul de la bodega ARM existen el 1,3,4,5 en base de datos
      * debe retornar el 2.
      * @param color
      * @param warehouse
@@ -74,7 +74,27 @@ public class YardRepository {
     private int getNextAssignationNumber(String color, String warehouse){
         //TODO: return the next number to be assigned for this match of color
         // be carefully for the deleted index.
-        return 1;
+
+        String sql_query = "Select assignation_number from YARD " +
+        "where color=:color and warehouse=:warehouse order by assignation_number ASC";
+
+        try (Handle handler = dbi.open(); Query query_string = handler.createQuery(sql_query)) {
+        	query_string
+            	.bind("color", color)
+            	.bind("warehouse", warehouse);
+        	List<Integer> assignationNumbers = query_string.mapTo(Integer.class).list();
+            handler.close();
+            int assignationNumber = 0;
+            for (Integer num : assignationNumbers) {
+            	assignationNumber++;
+				if (assignationNumber != num) {
+					return assignationNumber;
+				}
+			}
+            assignationNumber++;
+            return assignationNumber;
+        }
+        
     }
 
 
