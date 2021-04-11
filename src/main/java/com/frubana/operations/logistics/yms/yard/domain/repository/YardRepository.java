@@ -153,6 +153,21 @@ public class YardRepository {
         }
     }
 
+    public Yard getByWarehouseAndAssignationNumber(String warehouse, int assignationNumber) {
+        String sql_query = "Select id,color,warehouse,assignation_number "+
+                "from YARD " +
+                "where warehouse=:warehouse and assignation_number=:assignationNumber order by assignation_number";
+        try (Handle handler = dbi.open();
+             Query query_string = handler.createQuery(sql_query)) {
+            query_string
+                    .bind("warehouse", warehouse)
+                    .bind("assignationNumber", assignationNumber);
+            Yard yard = query_string.mapTo(Yard.class).first();
+            handler.close();
+            return yard;
+        }
+    }
+
     public List<Yard> getAll() {
         String sql_query = "Select id,color,warehouse,assignation_number "+
                 "from YARD ";
@@ -163,7 +178,6 @@ public class YardRepository {
             return yards;
         }
     }
-
 
     /** Mapper of the {@link Yard} for the JDBI implementation.
      */

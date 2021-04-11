@@ -238,4 +238,17 @@ public class YardController {
 
 
     }
+
+     /** Generates the yard.
+     *
+     * @param yard the yard object to be persisted in the repository, cannot be
+     *             null.
+     * @return A JSON response with a message and status:
+     * <code>
+     * {
+     * "message": "created",
+     * "status": 201
+     * }
+     * </code>
+     */
 }
