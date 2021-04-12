@@ -241,7 +241,7 @@ public class YardController {
                     JsonUtils.jsonResponse(HttpStatus.BAD_REQUEST,
                             "La estructura ingresada no es correcta. Ejemplo:"
                             + " id:0," + 
-                            " color:'rojo'"+
+                            " color:'#D3D3D3'"+
                             " assignation_Number: 1"));
 		}
 
@@ -264,28 +264,38 @@ public class YardController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity<Object> liberar(
-            @RequestBody final Yard yard) {
+            @RequestBody final Object object) {
         //Logging the given info
+    	try {
+    		Yard yard = (Yard)object;
+    		HashMap<String, Object> params = new HashMap<>();
+            params.put("yard", yard);
+            logFormatter.logInfo(logger, "registerYard",
+                    "Received request", params);
+            if (yard == null) {
+                return status(HttpStatus.BAD_REQUEST).body(
+                        JsonUtils.jsonResponse(HttpStatus.BAD_REQUEST,
+                                "The Yard cannot be null"));
+            }
 
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("yard", yard);
-        logFormatter.logInfo(logger, "registerYard",
-                "Received request", params);
-        if (yard == null) {
-            return status(HttpStatus.BAD_REQUEST).body(
+            Yard yard2= yardService.liberar(yard);
+            if(yard2 == null) { 
+               return status(HttpStatus.BAD_REQUEST).body(
+                        JsonUtils.jsonResponse(HttpStatus.BAD_REQUEST,
+                                    "yard no exist"));
+            }
+            return status(HttpStatus.CREATED).body(
+                    yard2
+            );
+    	}catch (Exception e) {
+    		return status(HttpStatus.BAD_REQUEST).body(
                     JsonUtils.jsonResponse(HttpStatus.BAD_REQUEST,
-                            "The Yard cannot be null"));
-        }
-
-        Yard yard2= yardService.liberar(yard);
-        if(yard2 == null) { 
-           return status(HttpStatus.BAD_REQUEST).body(
-                    JsonUtils.jsonResponse(HttpStatus.BAD_REQUEST,
-                                "yard no exist"));
-        }
-        return status(HttpStatus.CREATED).body(
-                yard2
-        );
+                            "La estructura ingresada no es correcta. Ejemplo:"
+                            + " warehouse:'AXM'," + 
+                            " color:'#0000ff'"+
+                            " assignation_Number: 1"));
+		}
+        
     }
  
 }
