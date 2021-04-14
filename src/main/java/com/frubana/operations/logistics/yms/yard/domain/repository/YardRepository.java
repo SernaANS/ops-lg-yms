@@ -66,8 +66,8 @@ public class YardRepository {
      * @return the {@link Yard}  update.
      */
     public Yard updateColorYard(Yard yard){
-        String sql_query="Update yard set color=:color"+
-                " WHERE warehouse=:warehouse and assignation_number=:assignationNumber";
+        String sql_query="Update yard set color = default_color"+
+                " WHERE color = :color and warehouse=:warehouse and assignation_number=:assignationNumber";
         try(Handle handler=dbi.open();
             Update query_string = handler.createUpdate(sql_query)){
             query_string
