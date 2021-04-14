@@ -99,7 +99,7 @@ public class YardService implements HealthCheck {
     public Yard liberar(Yard yard) {
        Yard yardFound=getByWarehouseAndAssignationNumber(yard.getWarehouse(), yard.getAssignationNumber());
        if(yardFound!=null){
-        return this.repository.modificar(yard);
+        return this.repository.updateColorYard(yard);
        }else{
            return null;
        }
