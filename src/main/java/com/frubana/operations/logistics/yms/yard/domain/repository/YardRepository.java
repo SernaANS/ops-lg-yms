@@ -41,8 +41,8 @@ public class YardRepository {
     public Yard register(Yard yard, String warehouse){
         int nextAssignation = this.getNextAssignationNumber(yard.getColor(),
                 warehouse);
-        String sql_query="Insert into yard (color, warehouse, assignation_number)"+
-                " values(:color, :warehouse, :nextAssignation)";
+        String sql_query="Insert into yard (color, warehouse, assignation_number, default_color)"+
+                " values(:color, :warehouse, :nextAssignation, :color)";
         try(Handle handler=dbi.open();
             Update query_string = handler.createUpdate(sql_query)){
             query_string
