@@ -221,22 +221,26 @@ public class YardController {
             @PathVariable(value = "warehouse") String warehouse,
             @RequestBody final Yard yard) {
         //Logging the given info
-
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("yard", yard);
-        params.put("warehouse", warehouse);
-        logFormatter.logInfo(logger, "registerYard",
-                "Received request", params);
-        if (yard == null) {
-            return status(HttpStatus.BAD_REQUEST).body(
+    	try {
+    		HashMap<String, Object> params = new HashMap<>();
+            params.put("yard", yard);
+            params.put("warehouse", warehouse);
+            logFormatter.logInfo(logger, "registerYard",
+                    "Received request", params);
+            if (yard == null) {
+                return status(HttpStatus.BAD_REQUEST).body(
+                        JsonUtils.jsonResponse(HttpStatus.BAD_REQUEST,
+                                "The Yard cannot be null"));
+            }
+            return status(HttpStatus.CREATED).body(
+                    yardService.registerYard(yard,warehouse)
+            );
+    	}catch (Exception e) {
+    		return status(HttpStatus.BAD_REQUEST).body(
                     JsonUtils.jsonResponse(HttpStatus.BAD_REQUEST,
-                            "The Yard cannot be null"));
-        }
-        return status(HttpStatus.CREATED).body(
-                yardService.registerYard(yard,warehouse)
-        );
-
-
+                            "La estructura ingresada no es correcta. Ejemplo: "
+                    	    + "'color': '#D3D3D3' "));
+    	}
     }
     
      /** Generates the yard.
@@ -258,26 +262,34 @@ public class YardController {
     public ResponseEntity<Object> liberar(
             @RequestBody final Yard yard) {
         //Logging the given info
+    	try {
+    		HashMap<String, Object> params = new HashMap<>();
+            params.put("yard", yard);
+            logFormatter.logInfo(logger, "registerYard",
+                    "Received request", params);
+            if (yard == null) {
+                return status(HttpStatus.BAD_REQUEST).body(
+                        JsonUtils.jsonResponse(HttpStatus.BAD_REQUEST,
+                                "The Yard cannot be null"));
+            }
 
-        HashMap<String, Object> params = new HashMap<>();
-        params.put("yard", yard);
-        logFormatter.logInfo(logger, "registerYard",
-                "Received request", params);
-        if (yard == null) {
-            return status(HttpStatus.BAD_REQUEST).body(
+            Yard yard2= yardService.liberar(yard);
+            if(yard2 == null) { 
+               return status(HttpStatus.BAD_REQUEST).body(
+                        JsonUtils.jsonResponse(HttpStatus.BAD_REQUEST,
+                                    "yard no exist"));
+            }
+            return status(HttpStatus.CREATED).body(
+                    yard2
+            );
+    	}catch (Exception e) {
+    		return status(HttpStatus.BAD_REQUEST).body(
                     JsonUtils.jsonResponse(HttpStatus.BAD_REQUEST,
-                            "The Yard cannot be null"));
-        }
-
-        Yard yard2= yardService.liberar(yard);
-        if(yard2 == null) { 
-           return status(HttpStatus.BAD_REQUEST).body(
-                    JsonUtils.jsonResponse(HttpStatus.BAD_REQUEST,
-                                "yard no exist"));
-        }
-        return status(HttpStatus.CREATED).body(
-                yard2
-        );
+                            "La estructura ingresada no es correcta. Ejemplo:"
+                            + " warehouse:'AXM'," + 
+                            " color:'#0000ff'"+
+                            " assignation_Number: 1"));
+		}     
     }
  
 }
