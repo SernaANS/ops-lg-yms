@@ -239,10 +239,10 @@ public class YardController {
     	}catch (Exception e) {
     		return status(HttpStatus.BAD_REQUEST).body(
                     JsonUtils.jsonResponse(HttpStatus.BAD_REQUEST,
-                            "La estructura ingresada no es correcta. Ejemplo:"
-                            + " id:0," + 
-                            " color:'#D3D3D3'"+
-                            " assignation_Number: 1"));
+                            "La estructura ingresada no es correcta. Ejemplo: "
+                    		+ "'id':0 "
+                    	    + "'color': '#D3D3D3' "
+                            + "'assignation_Number': 1"));
 		}
 
     }
