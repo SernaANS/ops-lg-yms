@@ -89,9 +89,7 @@ public class YardService implements HealthCheck {
     }
 
      /**
-     * will look for Yard matching the warehouse and the assignationNumber
-     * @param warehouse
-     * @param assignationNumber
+      * 
      */
     @Transactional
     @Retry(name = SERVICE_NAME)
@@ -100,6 +98,22 @@ public class YardService implements HealthCheck {
        Yard yardFound=getByWarehouseAndAssignationNumber(yard.getWarehouse(), yard.getAssignationNumber());
        if(yardFound!=null){
         return this.repository.updateColorYardFree(yard);
+       }else{
+           return null;
+       }
+    }
+
+    /**
+     * 
+     * @param Yard
+     */
+    @Transactional
+    @Retry(name = SERVICE_NAME)
+    @CircuitBreaker(name = SERVICE_NAME)
+    public Yard occupy(Yard yard) {
+       Yard yardFound=getByWarehouseAndAssignationNumber(yard.getWarehouse(), yard.getAssignationNumber());
+       if(yardFound!=null){
+        return this.repository.updateColorYardOccupy(yard);
        }else{
            return null;
        }
