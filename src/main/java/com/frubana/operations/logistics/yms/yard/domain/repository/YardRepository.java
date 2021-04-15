@@ -61,13 +61,13 @@ public class YardRepository {
     }
     
     /**
-     * uodate a yard for a specific warehouses and assignationNumber.
-     * @param yard the yard to be uodate.
-     * @return the {@link Yard}  uodate.
+     * update a yard for a specific warehouses, assignationNumber and default_color.
+     * @param yard the yard to be update.
+     * @return the {@link Yard}  update.
      */
-    public Yard modificar(Yard yard){
-        String sql_query="Update yard set color=:color"+
-                " WHERE warehouse=:warehouse and assignation_number=:assignationNumber";
+    public Yard updateColorYard(Yard yard){
+        String sql_query="Update yard set color = default_color"+
+                " WHERE color = :color and warehouse=:warehouse and assignation_number=:assignationNumber";
         try(Handle handler=dbi.open();
             Update query_string = handler.createUpdate(sql_query)){
             query_string
@@ -84,20 +84,11 @@ public class YardRepository {
     }
 
     /**
-     * Obtiene el siguiente numero de la assignacion ejemplo
-     * si para el muelle #ff0000 rojo de la bodega ALQ existen el 1,2,3,4,5 en base de datos
-     * debe retornar el 6.
-     * OJO:
-     * si para el muelle #0000ff azul de la bodega ARM existen el 1,3,4,5 en base de datos
-     * debe retornar el 2.
      * @param color
      * @param warehouse
      * @return
      */
     private int getNextAssignationNumber(String color, String warehouse){
-        //TODO: return the next number to be assigned for this match of color
-        // be carefully for the deleted index.
-
         String sql_query = "Select assignation_number from YARD " +
         "where color=:color and warehouse=:warehouse order by assignation_number ASC";
 
@@ -118,7 +109,6 @@ public class YardRepository {
         }
         
     }
-
 
     /**
      * Retrieve if an yard exists or not in the DB
