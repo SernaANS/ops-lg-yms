@@ -84,17 +84,17 @@ public class YardRepository {
     }
 
     /**
-     * update a yard for a specific warehouses, assignationNumber and default_color.
+     * update yard color a occuppy 
      * @param yard the yard to be update.
      * @return the {@link Yard}  update.
      */
     public Yard updateColorYardOccupy(Yard yard){
         String sql_query="Update yard set color ='#D3D3D3'"+
-                " WHERE   warehouse=:warehouse and assignation_number=:assignationNumber";
+        " WHERE  default_color = :color and warehouse=:warehouse and assignation_number=:assignationNumber";
         try(Handle handler=dbi.open();
             Update query_string = handler.createUpdate(sql_query)){
-            query_string    
-        
+            query_string
+                    .bind("color",yard.getColor())
                     .bind("warehouse",yard.getWarehouse())
                     .bind("assignationNumber",yard.getAssignationNumber());
             int yard_id=query_string

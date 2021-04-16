@@ -88,8 +88,10 @@ public class YardService implements HealthCheck {
        return this.repository.getByWarehouseAndAssignationNumber(warehouse, assignationNumber);
     }
 
-     /**
-      * 
+    /**
+     * will look for Yard matching the warehouse and the assignationNumber
+     * @param warehouse
+     * @param assignationNumber
      */
     @Transactional
     @Retry(name = SERVICE_NAME)
@@ -104,7 +106,7 @@ public class YardService implements HealthCheck {
     }
 
     /**
-     * 
+     * SET THE PATIO TO GRAY TO MARK IT AS OCCUPIED
      * @param Yard
      */
     @Transactional
